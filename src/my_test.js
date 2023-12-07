@@ -1,13 +1,22 @@
-function deleteDigit(n) {
-  const arrayNumbres = n.toString().split('');
+const MODERN_ACTIVITY = 15;
+const HALF_LIFE_PERIOD = 5730;
 
-  const posibleNumbers = arrayNumbres.map((el, index) => {
-    const temp = arrayNumbres.slice();
-    temp.splice(index, 1);
-    return parseInt(temp.join(''));
-  });
+function dateSample(sampleActivity) {
+  if (!sampleActivity || typeof sampleActivity !== 'string') {
+    return false;
+  }
 
-  return Math.max(...posibleNumbers);
+  const activity = parseFloat(sampleActivity);
+
+  // if (isNaN(activity) || activity <= 0 || activity >= MODERN_ACTIVITY) {
+  //   return false;
+  // }
+
+  const RATE = 0.693 / HALF_LIFE_PERIOD;
+  const age = Math.ceil(Math.log(MODERN_ACTIVITY / activity) / RATE);
+
+  return age;
 }
 
-console.log(deleteDigit(1001));
+//dateSample('1') => 22387
+console.log(dateSample('1'));
