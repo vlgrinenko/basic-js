@@ -1,43 +1,47 @@
-function transform(arr) {
-  if (!Array.isArray(arr)) {
-    throw Error("'arr' parameter must be an instance of the Array!");
-  }
-  const discardNext = '--discard-next';
-  const discardPrev = '--discard-prev';
-  const doubleNext = '--double-next';
-  const doublePrev = '--double-prev';
-  const newArr = [];
+const chainMaker = {
+  chain: [],
 
-  for (let i = 0; i < arr.length; i += 1) {
-    switch (arr[i]) {
-      case discardNext:
-        i += 1;
-        break;
-      case discardPrev:
-        if (i > 0 && arr[i - 2] !== discardNext) {
-          newArr.pop();
-        }
-        break;
-      case doubleNext:
-        if (i < arr.length - 1) {
-          newArr.push(arr[i + 1]);
-        }
-        break;
-      case doublePrev:
-        if (i > 0 && arr[i - 2] !== discardNext) {
-          newArr.push(arr[i - 1]);
-        }
-        break;
-      default:
-        newArr.push(arr[i]);
-        break;
+  getLength() {
+    return this.chain.length;
+  },
+  addLink(value) {
+    if (value === undefined) {
+      this.chain.push(`(  )`);
+    } else {
+      this.chain.push(`( ${value} )`);
     }
-  }
 
-  return newArr;
-}
+    return this;
+  },
+  removeLink(position) {
+    if (
+      typeof position !== 'number' ||
+      position <= 0 ||
+      position > this.chain.length
+    ) {
+      throw Error("You can't remove incorrect link!");
+    }
 
-console.log(
-  transform([1, 2, 3, '--discard-next', 1337, '--double-prev', 4, 5])
-);
-// output: [1, 2, 3, 4, 5]
+    this.chain.splice(position - 1, 1);
+
+    return this;
+  },
+  reverseChain() {
+    this.chain.reverse();
+
+    return this;
+  },
+  finishChain() {
+    const joinChain = this.chain.join('~~');
+    this.chain = [];
+
+    return joinChain;
+  },
+};
+
+const xxx = chainMaker.addLink(1).addLink(2).addLink(3).finishChain();
+
+console.log(xxx);
+// output: '( 2 )~~( 3 )'
+
+console.log([1, 2, 3].length);
