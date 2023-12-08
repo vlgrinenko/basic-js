@@ -1,19 +1,18 @@
-function getCommonCharacterCount(s1, s2) {
-  const array1 = s1.split('');
-  const array2 = s2.split('');
+function encodeLine(str) {
+  let encode = '';
+  let count = 1;
 
-  const matchesArray = array1.filter((char) => {
-    const indexInArray2 = array2.indexOf(char);
-
-    if (indexInArray2 !== -1) {
-      array2.splice(indexInArray2, 1);
-      return true;
+  for (let i = 0; i < str.length; i += 1) {
+    if (str[i] === str[i + 1]) {
+      count += 1;
+    } else {
+      encode += (count > 1 ? count : '') + str[i];
+      count = 1;
     }
+  }
 
-    return false;
-  });
-
-  return matchesArray.length;
+  return encode;
 }
 
-console.log(getCommonCharacterCount('aabcc', 'adcaa'));
+console.log(encodeLine('abbcca'));
+// '4a4t'
