@@ -1,18 +1,8 @@
-function encodeLine(str) {
-  let encode = '';
-  let count = 1;
+function getEmailDomain(email) {
+  const arr = email.split('@');
 
-  for (let i = 0; i < str.length; i += 1) {
-    if (str[i] === str[i + 1]) {
-      count += 1;
-    } else {
-      encode += (count > 1 ? count : '') + str[i];
-      count = 1;
-    }
-  }
-
-  return encode;
+  return arr[arr.length - 1];
 }
 
-console.log(encodeLine('abbcca'));
+console.log(getEmailDomain('very.unusual.@.unusual.com@usual.com'));
 // '4a4t'
