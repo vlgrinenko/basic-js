@@ -1,36 +1,20 @@
-class DepthCalculator {
-  constructor() {
-    this.depth = 1;
-  }
+function repeater(str, options) {
+  const {
+    repeatTimes = 1,
+    separator = '+',
+    addition = '',
+    additionRepeatTimes = 1,
+    additionSeparator = '|',
+  } = options;
 
-  calculateDepth(arr) {
-    let currentDepth = this.depth;
+  const repeatedAddition = Array(additionRepeatTimes)
+    .fill(String(addition))
+    .join(additionSeparator);
 
-    for (let i = 0; i < arr.length; i += 1) {
-      if (Array.isArray(arr[i])) {
-        const insideDepth = this.calculateDepth(arr[i]) + 1;
-
-        currentDepth = currentDepth > insideDepth ? currentDepth : insideDepth;
-      }
-    }
-
-    this.depth = 1;
-
-    return currentDepth;
-  }
+  return Array(repeatTimes)
+    .fill(String(str) + repeatedAddition)
+    .join(separator);
 }
 
-const depthCalc = new DepthCalculator();
-const xxx = depthCalc.calculateDepth([
-  1,
-  2,
-  3,
-  4,
-  [1, [2, [3, [4, [5, [6, [7, [8]]]]]]]],
-  [1, 2, [1, 2, [3, [4, [5]]]]],
-  5,
-  [1, [2, [3, [4, [5, [6, [7]]]]]]],
-]);
-
-console.log(xxx);
-// output: 8
+console.log(repeater('point', { repeatTimes: 3, separator: '&&&' }));
+// output: la+la+la
