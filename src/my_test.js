@@ -1,22 +1,36 @@
-const MODERN_ACTIVITY = 15;
-const HALF_LIFE_PERIOD = 5730;
-
-function dateSample(sampleActivity) {
-  if (!sampleActivity || typeof sampleActivity !== 'string') {
-    return false;
+function getSeason(date) {
+  if (!date) {
+    return 'Unable to determine the time of year!';
   }
 
-  const activity = parseFloat(sampleActivity);
+  if (!(date instanceof Date) || Object.getOwnPropertyNames(date).length) {
+    throw Error('Invalid date!');
+  }
 
-  // if (isNaN(activity) || activity <= 0 || activity >= MODERN_ACTIVITY) {
-  //   return false;
-  // }
+  const month = date.getMonth();
+  const spring = [2, 3, 4];
+  const summer = [5, 6, 7];
+  const autumn = [8, 9, 10];
 
-  const RATE = 0.693 / HALF_LIFE_PERIOD;
-  const age = Math.ceil(Math.log(MODERN_ACTIVITY / activity) / RATE);
-
-  return age;
+  if (spring.includes(month)) {
+    return 'spring';
+  } else if (summer.includes(month)) {
+    return 'summer';
+  } else if (autumn.includes(month)) {
+    return 'autumn';
+  } else {
+    return 'winter';
+  }
 }
 
-//dateSample('1') => 22387
-console.log(dateSample('1'));
+const fakeDate = {
+  toString() {
+    return Date.prototype.toString.call(new Date());
+  },
+  [Symbol.toStringTag]: 'Date',
+};
+
+Object.setPrototypeOf(fakeDate, Object.getPrototypeOf(new Date()));
+
+console.log(getSeason(fakeDate));
+// console.log(fakeDate.hasOwnProperty('getTime'));
